@@ -23,19 +23,21 @@ function render(data) {
   var width = 900 - margin.left - margin.right;
   var height = 700 - margin.bottom - margin.top;
 
-  var xScale = d3.scaleTime()
+  var xScale = d3.time.scale()
     .domain(d3.extent(data, function(d) { return d.date }))
     .range([margin.left, width]);
   
-  var yScale = d3.scaleLinear()
+  var yScale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d.gdp })])
     .range([height, margin.bottom]);
   
-  var xAxis = d3.axisBottom()
+  var xAxis = d3.svg.axis()
     .scale(xScale)
+    .orient("bottom");
   
-  var yAxis = d3.axisLeft()
+  var yAxis = d3.svg.axis()
     .scale(yScale)
+    .orient("left");
 
   var svg =  d3.select("body")
     .append("svg")
