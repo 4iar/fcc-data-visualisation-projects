@@ -1,9 +1,6 @@
-.chart {
-  width: 90vw;
-  height: 90vh;
-  background: gray;
-
-  margin: auto;
+svg {
+  display: block;
+    margin: auto;
 }
 
 .axis path,
@@ -14,7 +11,7 @@
 }
 
 .axis text {
-  font: 10px sans-serif;
+  font: 1em sans-serif;
 }
 
 .d3-tip {
