@@ -1,51 +1,54 @@
-$(document).ready(function () {
-  // TODO: use d3.json instead of jquery
-  $.getJSON("./GDP-data.json", function (data) {
-    drawGraph(data.data);
-  })
-})
+var DATA_PATH = '../GDP-data.json';
 
-function drawGraph(data) {
-  var w = 500;
-  var h = 100;
+d3.json(DATA_PATH, render);
+
+function cleanup(data) {
+  return data.data.map(function(obs) {
+    return {
+      date: new Date(obs[0]),
+      gdp: obs[1]
+    };
+  });
+}
+
+function render(data) {
+  var data = cleanup(data);
+
+  var width = 900;
+  var height = 700;
+  var margin = {
+    left: 50,
+    right: 50,
+    top: 50,
+    bottom: 50
+  };
 
   var xScale = d3.scaleTime()
-    .domain(d3.extent(data, function(d) { return new Date(d[0])}))
-    .range([0, w]);
+    .domain(d3.extent(data, function(d) { return d.date }))
+    .range([margin.left, width - margin.right]);
   
   var yScale = d3.scaleLinear()
-    .domain([0, d3.max(data, function(d) { return d[1] })])
-    .range([0, h]);
+    .domain([0, d3.max(data, function(d) { return d.gdp })])
+    .range([height - margin.top, margin.bottom]);
+  
+  var xAxis = d3.axisBottom()
+    .scale(xScale)
+  
+  var yAxis = d3.axisLeft()
+    .scale(yScale)
 
-  console.log(xScale);
-
-  var svg = d3.select("body")
+  var svg =  d3.select("body")
     .append("svg")
-    .attr("width", w)
-    .attr("height", h);
+    .attr("width", width)
+    .attr("height", height)
 
-  var g = svg.append("g");
-  var yAxisG = g.append("g")
-  var xAxisG = g.append("g")
-  
-  var	yAxis = d3.axisRight(yScale);
-  var	xAxis = d3.axisBottom(xScale);
-  
-  svg.selectAll("rect")
-    .data(data)
-    .enter().append("rect")
-    .attr("x", function(d) {
-      return xScale(new Date(d[0]));
-    })
-    .attr("y", function(d) {
-      return h - yScale(d[1]);
-    })
-    .attr("width", 20)
-    .attr("height", function(d, i) {
-      return i;
-    });
-  
-  yAxisG.call(yAxis);
-  xAxisG.call(xAxis);
-  
+  svg.append('g')            
+    .attr('class', 'x axis') 
+    .attr("transform", "translate(0," + (height - margin.bottom) + ")")
+    .call(xAxis);           
+
+  svg.append('g')          
+    .attr('class', 'y axis')
+    .attr("transform", "translate(" + (margin.left) + ",0)")
+    .call(yAxis);          
 }
