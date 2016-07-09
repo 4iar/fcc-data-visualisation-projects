@@ -1,0 +1,5 @@
+*.swp
+.idea
+styles/.sass-cache
+styles/index.css
+styles/index.css.map
