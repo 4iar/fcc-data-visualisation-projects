@@ -39,10 +39,23 @@ function render(data) {
     .scale(yScale)
     .orient("left");
 
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .html(function(d) {
+      return "GDP: $" + d.gdp+ "B<br>"+d.date.getFullYear() + ": " + monthNames[d.date.getMonth()];
+    });
+
   var svg =  d3.select("body")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .call(tip);
 
   svg.append('g')            
     .attr('class', 'x axis') 
@@ -61,5 +74,7 @@ function render(data) {
     .attr("x", function(d) { return xScale(d.date); })
     .attr("width", width/data.length)
     .attr("y", function(d) { return yScale(d.gdp); })
-    .attr("height", function(d) { return height - yScale(d.gdp); });
+    .attr("height", function(d) { return height - yScale(d.gdp); })
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
 }
