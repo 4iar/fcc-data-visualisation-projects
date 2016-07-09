@@ -1,4 +1,4 @@
-var DATA_PATH = 'GDP-data.json';
+var DATA_PATH = './GDP-data.json';
 
 d3.json(DATA_PATH, render);
 
