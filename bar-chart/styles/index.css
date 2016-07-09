@@ -8,9 +8,6 @@ svg {
   stroke: #000;
   shape-rendering: crispEdges; }
 
-.axis text {
-  font: 1em sans-serif; }
-
 .d3-tip {
   line-height: 1;
   font-weight: bold;
