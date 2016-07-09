@@ -1,4 +1,4 @@
-var DATA_PATH = './GDP-data.json';
+var DATA_PATH = 'https://4iar.github.io/fcc-data-visualisation-projects/bar-chart/GDP-data.json';
 
 d3.json(DATA_PATH, render);
 
