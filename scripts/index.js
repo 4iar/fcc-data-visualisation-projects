@@ -52,10 +52,14 @@ function render(data) {
   svg.append('g')          
     .attr('class', 'y axis')
     .attr("transform", "translate(" + (margin.left) + ",0)")
-    .call(yAxis);          
+    .call(yAxis);
 
-  
-  
-  
-  
+  svg.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("x", function(d) { return xScale(d.date); })
+    .attr("width", width/data.length)
+    .attr("y", function(d) { return yScale(d.gdp); })
+    .attr("height", function(d) { return height - yScale(d.gdp); });
 }
