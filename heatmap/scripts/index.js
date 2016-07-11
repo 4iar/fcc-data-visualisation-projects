@@ -17,7 +17,7 @@ function cleanup(data) {
 
 function render(data) {
   var data = cleanup(data.monthlyVariance);
-  var yearsRange = 2015 - 1753
+  var yearsRange = 2015 - 1753;  // should use extent diff for reusability
 
   var margin = {
     left: 50,
@@ -36,8 +36,10 @@ function render(data) {
 
   console.log(color)
 
+  var yearsExtent = d3.extent(data, function(d) { return d.year });
+  yearsExtent[1] += 1;
   var xScale = d3.scale.linear()
-    .domain(d3.extent(data, function(d) { return d.year }))
+    .domain(yearsExtent)
     .range([margin.left, width])
 
   var yScale = d3.scale.linear()
