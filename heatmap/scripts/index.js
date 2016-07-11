@@ -32,9 +32,7 @@ function render(data) {
 
   var color = d3.scale.linear()
     .domain([d3.min(data, function(d) { return d.variance}), 0, d3.max(data, function(d) { return d.variance })])
-    .range(["red", "white", "green"]);
-
-  console.log(color)
+    .range(["#fc8d59", "#ffffbf", "#99d594"]);
 
   var yearsExtent = d3.extent(data, function(d) { return d.year });
   yearsExtent[1] += 1;
