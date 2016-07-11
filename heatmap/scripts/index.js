@@ -80,12 +80,15 @@ function render(data) {
     //.call(yAxis);
   // TODO: remove y axis labelling stuff since we manually insert months
 
+  var reversedMonths = MONTHS.slice();
+  reversedMonths.reverse()
   svg.selectAll(".timeLabel")
-    .data(MONTHS.reverse())
+    .data(reversedMonths)
     .enter().append("text")
     .text(function(d) { return d; })
     .attr("x", margin.left - 10)
-    .attr("y", function(d, i) { return Math.floor((cellHeight * i) + cellHeight / 2) })
+    // hacky fix to order months correctly -- TODO: should setup proper id functino 
+    .attr("y", function(d, i) { return Math.floor((cellHeight * reversedMonths.indexOf(d)) + cellHeight / 2) })
     .attr("class", "month")
     .style("text-anchor", "end")
 
