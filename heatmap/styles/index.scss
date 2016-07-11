@@ -11,6 +11,11 @@ svg {
   shape-rendering: crispEdges;
 }
 
+.month, .axis {
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif;
+}
+
 .d3-tip {
   line-height: 1;
   font-weight: bold;
@@ -18,6 +23,7 @@ svg {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 2px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Creates a small triangle extender for the tooltip */

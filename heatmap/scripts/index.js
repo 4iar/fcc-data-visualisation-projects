@@ -18,22 +18,22 @@ function cleanup(data) {
 function render(data) {
   var baseTemperature = data.baseTemperature;
   var data = cleanup(data.monthlyVariance);
-  var yearsRange = 2015 - 1753;  // should use extent diff for reusability
+  var yearsRange = 2015 - 1753;  // TODO: should use extent diff for reusability
 
   var margin = {
-    left: 50,
-    right: 50,
+    left: 170,
+    right: 10,
     top: 50,
     bottom: 50
   };
-  var width = 1400 - margin.left - margin.right;
-  var height = 700 - margin.bottom - margin.top;
+  var width = 1700 - margin.left - margin.right;
+  var height = 800 - margin.bottom - margin.top;
   var cellWidth = Math.ceil(width / yearsRange);
   var cellHeight = Math.floor(height / 12);
 
   var color = d3.scale.linear()
     .domain([d3.min(data, function(d) { return d.variance}), 0, d3.max(data, function(d) { return d.variance })])
-    .range(["#fc8d59", "#ffffbf", "#99d594"]);
+    .range(["#99d594", "#ffffbf", "#fc8d59",]);
 
   var yearsExtent = d3.extent(data, function(d) { return d.year });
   yearsExtent[1] += 1;
@@ -47,6 +47,8 @@ function render(data) {
 
   var xAxis = d3.svg.axis()
     .scale(xScale)
+    .tickSize(10)
+    .tickFormat(d3.format())
     .orient("bottom")
   
 
@@ -76,21 +78,23 @@ function render(data) {
     .attr("transform", "translate(" + (margin.left) + ",0)")
     .style("text-anchor", "middle");
     //.call(yAxis);
+  // TODO: remove y axis labelling stuff since we manually insert months
 
   svg.selectAll(".timeLabel")
     .data(MONTHS.reverse())
     .enter().append("text")
     .text(function(d) { return d; })
-    .attr("x", margin.left - 25)
+    .attr("x", margin.left - 10)
     .attr("y", function(d, i) { return Math.floor((cellHeight * i) + cellHeight / 2) })
-    .style("text-anchor", "middle")
+    .attr("class", "month")
+    .style("text-anchor", "end")
 
   svg.selectAll(".bar")
     .data(data)
     .enter().append("rect")
     .attr("class", "bar")
     .attr("x", function(d) { return xScale(d.year); })
-    .attr("width", function(d) { return cellWidth})
+    .attr("width", function(d) { return cellWidth })
     .attr("y", function(d) { return height - (cellHeight * d.month); })
     .attr("height", function(d) { return cellHeight })
     .style("fill", function(d) { return color(d.variance)})
