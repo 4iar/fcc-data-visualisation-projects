@@ -79,7 +79,7 @@ function render(data) {
     //.call(yAxis);
 
   svg.selectAll(".timeLabel")
-    .data(MONTHS)
+    .data(MONTHS.reverse())
     .enter().append("text")
     .text(function(d) { return d; })
     .attr("x", margin.left - 25)
