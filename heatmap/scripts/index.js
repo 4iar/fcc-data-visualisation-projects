@@ -1,5 +1,5 @@
 var DATA_PATH = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
-var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 
 d3.json(DATA_PATH, render);
@@ -16,6 +16,7 @@ function cleanup(data) {
 }
 
 function render(data) {
+  var baseTemperature = data.baseTemperature;
   var data = cleanup(data.monthlyVariance);
   var yearsRange = 2015 - 1753;  // should use extent diff for reusability
 
@@ -56,7 +57,7 @@ function render(data) {
   var tip = d3.tip()
     .attr('class', 'd3-tip')
     .html(function(d) {
-      return "Year: " + d.year + "<br>Month: " + d.month;
+      return d.year + " - " + MONTHS[d.month-1] + "<br>Relative: " + d.variance + " &deg C<br>Actual: " + (baseTemperature - d.variance) + " &deg C";
     });
 
   var svg =  d3.select("body")
