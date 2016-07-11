@@ -1,4 +1,6 @@
 var DATA_PATH = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/global-temperature.json';
+var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 
 d3.json(DATA_PATH, render);
 
@@ -14,11 +16,8 @@ function cleanup(data) {
 }
 
 function render(data) {
-  var baseTemperature = data.baseTemperature;
   var data = cleanup(data.monthlyVariance);
   var yearsRange = 2015 - 1753
-
-  console.log(data);
 
   var margin = {
     left: 50,
@@ -28,9 +27,14 @@ function render(data) {
   };
   var width = 1400 - margin.left - margin.right;
   var height = 700 - margin.bottom - margin.top;
-  var cellWidth = width / yearsRange;
-  var cellHeight = height / 13;
-  
+  var cellWidth = Math.ceil(width / yearsRange);
+  var cellHeight = Math.floor(height / 12);
+
+  var color = d3.scale.linear()
+    .domain([d3.min(data, function(d) { return d.variance}), 0, d3.max(data, function(d) { return d.variance })])
+    .range(["red", "white", "green"]);
+
+  console.log(color)
 
   var xScale = d3.scale.linear()
     .domain(d3.extent(data, function(d) { return d.year }))
@@ -48,9 +52,6 @@ function render(data) {
   var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left");
-  
-  var cValue = function(d) { return d.dopingAccused },
-    color = d3.scale.category10();
   
   var tip = d3.tip()
     .attr('class', 'd3-tip')
@@ -72,7 +73,16 @@ function render(data) {
   svg.append('g')
     .attr('class', 'y axis')
     .attr("transform", "translate(" + (margin.left) + ",0)")
-    .call(yAxis);
+    .style("text-anchor", "middle");
+    //.call(yAxis);
+
+  svg.selectAll(".timeLabel")
+    .data(MONTHS)
+    .enter().append("text")
+    .text(function(d) { return d; })
+    .attr("x", margin.left - 25)
+    .attr("y", function(d, i) { return Math.floor((cellHeight * i) + cellHeight / 2) })
+    .style("text-anchor", "middle")
 
   svg.selectAll(".bar")
     .data(data)
@@ -82,6 +92,7 @@ function render(data) {
     .attr("width", function(d) { return cellWidth})
     .attr("y", function(d) { return height - (cellHeight * d.month); })
     .attr("height", function(d) { return cellHeight })
+    .style("fill", function(d) { return color(d.variance)})
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide)
 }
