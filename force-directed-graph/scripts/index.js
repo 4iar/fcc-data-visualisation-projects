@@ -1,4 +1,4 @@
-var DATA_PATH = '../countries.json';
+var DATA_PATH = "https://4iar.github.io/fcc-data-visualisation-projects/force-directed-graph/countries.json";
 var FLAG_BASE_PATH = "https://4iar.github.io/fcc-data-visualisation-projects/force-directed-graph/flags/"
   
 $(document).ready(function() {
