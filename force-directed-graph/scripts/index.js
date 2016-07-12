@@ -1,4 +1,6 @@
 var DATA_PATH = '../countries.json';
+var FLAG_BASE_PATH = "https://4iar.github.io/fcc-data-visualisation-projects/force-directed-graph/flags/"
+  
 $(document).ready(function() {
 
   var svg = d3.select("svg"),
@@ -31,7 +33,7 @@ $(document).ready(function() {
 
 //      .attr("r", 2.5)
     node.append("image")
-      .attr("xlink:href", function(d) {return "./flags/" + d.code + ".gif"})
+      .attr("xlink:href", function(d) {return FLAG_BASE_PATH + d.code + ".gif"})
       .attr("x", -8)
       .attr("y", -8)
       .attr("width", 16)
