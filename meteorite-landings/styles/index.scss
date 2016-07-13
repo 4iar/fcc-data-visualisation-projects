@@ -8,6 +8,13 @@ body {
   background: #266d98;
 }
 
+svg {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+  float: left;
+}
+
 .bubble {
   fill-opacity: 0.5;
   stroke: #ffffff;

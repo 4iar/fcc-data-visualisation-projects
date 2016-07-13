@@ -4,9 +4,10 @@ STRIKES_PATH = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceD
 
 $(document).ready (function() {
   // set up the svg
-  var width = 900;
-  var height = 900;
+  var width = 800;
+  var height = 500;
   var svg = d3.select("body div").append("svg")
+    .attr("viewBox", "0 0 " + width + " " + height)
     .attr("width", width)
     .attr("height", height);
 
