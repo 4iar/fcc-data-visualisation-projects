@@ -1,0 +1,45 @@
+WORLD_PATH = '../world-110m2.json';
+STRIKES_PATH = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/meteorite-strike-data.json"
+
+
+$(document).ready (function() {
+  // set up the svg
+  var width = 900;
+  var height = 900;
+  var svg = d3.select("body div").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var projection = d3.geoMercator()
+
+  var path = d3.geoPath()
+    .projection(projection);
+
+  // draw the world
+  d3.json(WORLD_PATH, function(error, world) {
+    svg.insert("path", ".graticule")
+      .datum(topojson.feature(world, world.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
+
+    svg.insert("path", ".graticule")
+      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+      .attr("class", "boundary")
+      .attr("d", path);
+  });
+
+  // draw the strikes
+  d3.json(STRIKES_PATH, function(error, strikes) {
+    var radius = d3.scaleSqrt()
+      .domain(d3.extent(strikes.features, function(d) { return +d.properties.mass}))
+      .range([0, 30]);
+
+    svg.append("g")
+      .attr("class", "bubble")
+      .selectAll("circle")
+      .data(strikes.features)
+      .enter().append("circle")
+      .attr("transform", function(d) { if(d.geometry) { return "translate(" + path.centroid(d) + ")"; }})
+      .attr("r", function(d) { return radius(d.properties.mass)})
+  });
+}) 
