@@ -45,11 +45,18 @@ $(document).ready (function() {
       .domain(d3.extent(strikes.features, function(d) { return +d.properties.mass}))
       .range([0, width/20]);
 
+    // sort the data by mass so small circles wont be hidden underneath larger ones
+    var features = strikes.features.sort(
+      function(a, b) {
+        return +b.properties.mass - +a.properties.mass;
+      }
+    )
+
     svg.append("g")
       .attr("class", "bubble")
       .call(tip)
       .selectAll("circle")
-      .data(strikes.features)
+      .data(features)
       .enter().append("circle")
       .attr("transform", function(d) { if(d.geometry) { return "translate(" + path.centroid(d) + ")"; }})
       .attr("r", function(d) { return radius(d.properties.mass)})
