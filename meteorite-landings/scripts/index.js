@@ -1,4 +1,4 @@
-WORLD_PATH = '../world-110m2.json';
+WORLD_PATH = "https://4iar.github.io/fcc-data-visualisation-projects/meteorite-landings/world-110m2.json";
 STRIKES_PATH = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/meteorite-strike-data.json"
 
 
