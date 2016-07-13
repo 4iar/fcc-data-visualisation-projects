@@ -4,7 +4,7 @@ STRIKES_PATH = "https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceD
 
 $(document).ready (function() {
   // set up the svg
-  var width = 800;
+  var width = 950;
   var height = 500;
   var svg = d3.select("body div").append("svg")
     .attr("viewBox", "0 0 " + width + " " + height)
@@ -43,7 +43,7 @@ $(document).ready (function() {
   d3.json(STRIKES_PATH, function(error, strikes) {
     var radius = d3.scale.sqrt()
       .domain(d3.extent(strikes.features, function(d) { return +d.properties.mass}))
-      .range([0, 30]);
+      .range([0, width/20]);
 
     svg.append("g")
       .attr("class", "bubble")
