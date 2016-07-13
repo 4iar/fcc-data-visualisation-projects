@@ -1,11 +1,17 @@
 path {
-  stroke: white;
+  stroke: #266d98;
   stroke-width: 0.5px;
-  fill: black;
+  fill: #95E1D3;
+}
+
+body {
+  background: #266d98;
 }
 
 .bubble {
-  fill: red;
+  fill-opacity: 0.5;
+  stroke: #ffffff;
+  stroke-width: 0.8px;
 }
 
 .d3-tip {
