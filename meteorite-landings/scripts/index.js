@@ -10,10 +10,20 @@ $(document).ready (function() {
     .attr("width", width)
     .attr("height", height);
 
-  var projection = d3.geoMercator()
+  var projection = d3.geo.mercator()
 
-  var path = d3.geoPath()
+  var path = d3.geo.path()
     .projection(projection);
+  
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .html(function(d) {
+      var p = d.properties;
+      return '<b>' + p.name + '</b>' +
+        '<br>mass: ' + p.mass + 'g' +
+        '<br>class: ' + p.recclass +
+        '<br>year: ' + new Date(p.year).getFullYear();  // TODO: use less expensive method
+    });
 
   // draw the world
   d3.json(WORLD_PATH, function(error, world) {
@@ -30,16 +40,19 @@ $(document).ready (function() {
 
   // draw the strikes
   d3.json(STRIKES_PATH, function(error, strikes) {
-    var radius = d3.scaleSqrt()
+    var radius = d3.scale.sqrt()
       .domain(d3.extent(strikes.features, function(d) { return +d.properties.mass}))
       .range([0, 30]);
 
     svg.append("g")
       .attr("class", "bubble")
+      .call(tip)
       .selectAll("circle")
       .data(strikes.features)
       .enter().append("circle")
       .attr("transform", function(d) { if(d.geometry) { return "translate(" + path.centroid(d) + ")"; }})
       .attr("r", function(d) { return radius(d.properties.mass)})
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
   });
 }) 
